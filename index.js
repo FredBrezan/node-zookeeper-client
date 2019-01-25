@@ -508,8 +508,10 @@ Client.prototype.setData = function (path, data, version, callback) {
     header.type = jute.OP_CODES.SET_DATA;
 
     payload.path = path;
-    payload.data = new Buffer(data.length);
-    data.copy(payload.data);
+    if (Buffer.isBuffer(data)) {
+      payload.data = new Buffer(data.length);
+      data.copy(payload.data);
+    }
     payload.version = version;
 
     request = new jute.Request(header, payload);
